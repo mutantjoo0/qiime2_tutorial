@@ -15,7 +15,7 @@ paste <(ls $d) <(perl -le 'sub p{my $l=pop @_;unless(@_){return map [$_],@$l;}re
 ```
 
 ```diff
-+ In the above, the perl one liner is used to generate a unique 8bp barcode for every sample folder. Below, we are generating a 3bp as an example.
+- In the above, the perl one liner is used to generate a unique 8bp barcode for every sample folder. Below, we are generating a 3bp as an example.
 perl -le 'sub p{my $l=pop @_;unless(@_){return map [$_],@$l;}return map { my $ll=$_; map [@$ll,$_],@$l} p(@_);} @a=[A,C,G,T]; print join("", @$_) for p(@a,@a,@a)'
 AAA
 AAC
@@ -97,7 +97,7 @@ TTT
 (for i in $(ls $d); do bioawk -cfastx '{print "@"$1" "$4"\n"$seq"\n+\n"$qual}' $d/$i/Raw/*_R1.fastq ; done) > forward.fastq
 ```
 
-**Step 4**: Aseemble reverse files
+**Step 4**: Assemble reverse files
 ```bash
 (for i in $(ls $d); do bioawk -cfastx '{print "@"$1" "$4"\n"$seq"\n+\n"$qual}' $d/$i/Raw/*_R2.fastq ; done) > reverse.fastq
 ```
