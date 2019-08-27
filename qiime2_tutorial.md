@@ -2,14 +2,16 @@
 By:
 [Dr Umer Zeeshan Ijaz][http://userweb.eng.gla.ac.uk/umer.ijaz] Last Updated: 27/08/2019
 
-Assuming you have organized the samples in separate folder with the folder name specifying the sample names, and within each folder, there is a "Raw" folder containing the pairend forward and reverse files. 
+Assuming you have organized the samples in separate folder with the folder name specifying the sample names, and within each folder, there is a "Raw" folder containing the paired-end forward and reverse files. 
 
 
-**Step 1**: All you have to do is to run the following one liners to create the fictious barcodes and save them as `sample_metadata.tsv` file
+**Step 1**: All you have to do is to run the following one liners to create the fictious barcodes and save them as `sample_metadata.tsv` file. Please make sure you 
 
 
 ```bash
-d="/PATH_TO_FOLDER/"; t=$(ls $d | wc -l);paste <(ls $d) <(perl -le 'sub p{my $l=pop @_;unless(@_){return map [$_],@$l;}return map { my $ll=$_; map [@$ll,$_],@$l} p(@_);} @a=[A,C,G,T]; print join("", @$_) for p(@a,@a,@a,@a,@a,@a,@a,@a);' | awk -v k=$t 'NR<=k{print}') | awk 'BEGIN{print "sample-id\tbarcode-sequence\n#q2:types\tcategorical"}1' > sample_metadata.tsv
+d="/PATH_TO_FOLDER/"; 
+t=$(ls $d | wc -l);
+paste <(ls $d) <(perl -le 'sub p{my $l=pop @_;unless(@_){return map [$_],@$l;}return map { my $ll=$_; map [@$ll,$_],@$l} p(@_);} @a=[A,C,G,T]; print join("", @$_) for p(@a,@a,@a,@a,@a,@a,@a,@a);' | awk -v k=$t 'NR<=k{print}') | awk 'BEGIN{print "sample-id\tbarcode-sequence\n#q2:types\tcategorical"}1' > sample_metadata.tsv
 ```
 
 
@@ -125,4 +127,3 @@ qiime dada2 denoise-paired --i-demultiplexed-seqs demux.qza --p-trim-left-f 0 --
 ```bash
 qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs.qza --o-alignment aligned-rep-seqs.qza --o-masked-alignment masked-aligned-rep-seqs.qza --p-n-threads 0 --o-tree unrooted-tree.qza --o-rooted-tree rooted-tree.qza
 ```
-[http://userweb.eng.gla.ac.uk/umer.ijaz]: http://userweb.eng.gla.ac.uk/umer.ijaz "Dr Umer Zeeshan Ijaz"
