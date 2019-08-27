@@ -16,7 +16,7 @@ paste <(ls $d) <(perl -le 'sub p{my $l=pop @_;unless(@_){return map [$_],@$l;}re
 
 
 > **Tip**: In the above, the perl one liner is used to generate a unique 8bp barcode for every sample folder. Below, we are generating a 3bp as an example.
-perl -le 'sub p{my $l=pop @_; unless(@_){return map [$_],@$l;}return map { my $ll=$_; map [@$ll,$_],@$l} p(@_);} @a=[A,C,G,T]; print join("", @$_) for p(@a,@a,@a)'
+```perl -le 'sub p{my $l=pop @_; unless(@_){return map [$_],@$l;}return map { my $ll=$_; map [@$ll,$_],@$l} p(@_);} @a=[A,C,G,T]; print join("", @$_) for p(@a,@a,@a)'
 AAA
 AAC
 AAG
@@ -81,7 +81,7 @@ TTA
 TTC
 TTG
 TTT
-
+```
 
 
 
