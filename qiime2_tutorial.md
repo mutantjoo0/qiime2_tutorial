@@ -1,7 +1,6 @@
 # QIIME2 tutorial
-by
-[Dr Umer Zeeshan Ijaz][http://userweb.eng.gla.ac.uk/umer.ijaz]
-Last Updated: 27/08/2019
+By:
+[Dr Umer Zeeshan Ijaz][http://userweb.eng.gla.ac.uk/umer.ijaz] Last Updated: 27/08/2019
 
 Assuming you have organized the samples in separate folder with the folder name specifying the sample names, and within each folder, there is a "Raw" folder containing the pairend forward and reverse files. 
 
