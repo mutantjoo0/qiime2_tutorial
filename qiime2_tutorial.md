@@ -14,6 +14,75 @@ t=$(ls $d | wc -l);
 paste <(ls $d) <(perl -le 'sub p{my $l=pop @_;unless(@_){return map [$_],@$l;}return map { my $ll=$_; map [@$ll,$_],@$l} p(@_);} @a=[A,C,G,T]; print join("", @$_) for p(@a,@a,@a,@a,@a,@a,@a,@a);' | awk -v k=$t 'NR<=k{print}') | awk 'BEGIN{print "sample-id\tbarcode-sequence\n#q2:types\tcategorical"}1' > sample_metadata.tsv
 ```
 
+In the above, the perl one liner is used to generate a unique 8bp barcode for every sample folder. Below, we are generating a 3bp as an example.
+```bash
+perl -le 'sub p{my $l=pop @_;unless(@_){return map [$_],@$l;}return map { my $ll=$_; map [@$ll,$_],@$l} p(@_);} @a=[A,C,G,T]; print join("", @$_) for p(@a,@a,@a)'
+AAA
+AAC
+AAG
+AAT
+ACA
+ACC
+ACG
+ACT
+AGA
+AGC
+AGG
+AGT
+ATA
+ATC
+ATG
+ATT
+CAA
+CAC
+CAG
+CAT
+CCA
+CCC
+CCG
+CCT
+CGA
+CGC
+CGG
+CGT
+CTA
+CTC
+CTG
+CTT
+GAA
+GAC
+GAG
+GAT
+GCA
+GCC
+GCG
+GCT
+GGA
+GGC
+GGG
+GGT
+GTA
+GTC
+GTG
+GTT
+TAA
+TAC
+TAG
+TAT
+TCA
+TCC
+TCG
+TCT
+TGA
+TGC
+TGG
+TGT
+TTA
+TTC
+TTG
+TTT
+```
+
 
 **Step 2**: Generate barcodes
 ```bash
