@@ -244,7 +244,7 @@ biom add-metadata \
 
 ```
 **Constructing a classifier for a new reference database**:
-Follow the tutorial given at [https://docs.qiime2.org/2019.7/tutorials/feature-classifier/] [ https://docs.qiime2.org/2019.7/tutorials/feature-classifier/]
+Follow the tutorial given at [https://docs.qiime2.org/2019.7/tutorials/feature-classifier/][ https://docs.qiime2.org/2019.7/tutorials/feature-classifier/]
 ```bash
 qiime tools import --type 'FeatureData[Sequence]' --input-path fungene_nirK_28_08_2019.fasta --output-path fungene_nirK_28_08_2019.qza
 
@@ -254,6 +254,6 @@ qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads fungene_
 
 ```
 
-[https://docs.qiime2.org/2019.7/tutorials/feature-classifier/]:  https://docs.qiime2.org/2019.7/tutorials/feature-classifier/
+[https://docs.qiime2.org/2019.7/tutorials/feature-classifier/]: https://docs.qiime2.org/2019.7/tutorials/feature-classifier/
 [https://github.com/joey711/phyloseq/issues/821]: https://github.com/joey711/phyloseq/issues/821 
 [http://userweb.eng.gla.ac.uk/umer.ijaz]: http://userweb.eng.gla.ac.uk/umer.ijaz "Dr Umer Zeeshan Ijaz"
