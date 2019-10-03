@@ -199,4 +199,61 @@ qiime dada2 denoise-paired --i-demultiplexed-seqs demux.qza --p-trim-left-f 0 --
 ```bash
 qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs.qza --o-alignment aligned-rep-seqs.qza --o-masked-alignment masked-aligned-rep-seqs.qza --p-n-threads 0 --o-tree unrooted-tree.qza --o-rooted-tree rooted-tree.qza
 ```
+**Step 11**: Assign taxonomy
+```bash
+
+qiime feature-classifier classify-sklearn --i-classifier /software/qiime2_databases/silva-132-99-nb-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
+
+qiime feature-classifier classify-sklearn --i-classifier /software/qiime2_databases/Fungene_A_amoA_20092019-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
+
+qiime feature-classifier classify-sklearn --i-classifier /software/qiime2_databases/Fungene_B_amoA_20092019-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
+
+qiime feature-classifier classify-sklearn --i-classifier /software/qiime2_databases/Fungene_nirK_20092019-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
+
+qiime feature-classifier classify-sklearn --i-classifier /software/qiime2_databases/Fungene_nirS_20092019-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
+
+qiime feature-classifier classify-sklearn --i-classifier /software/qiime2_databases/Fungene_nrfA_20092019-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
+
+qiime feature-classifier classify-sklearn --i-classifier /software/qiime2_databases/Fungene_nxrB_20092019-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
+
+qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
+
+```
+**Exporting data to use with R**:
+```bash
+qiime tools export --input-path table.qza --output-path output
+qiime tools export --input-path rep-seqs.qza --output-path output
+qiime tools export --input-path rooted-tree.qza --output-path output
+qiime tools export --input-path taxonomy.qza --output-path output
+```
+
+**Making Biome file compatible with R and phyloseq**:
+Please check [https://github.com/joey711/phyloseq/issues/821][https://github.com/joey711/phyloseq/issues/821] on how to make a biome table compatible with phyloseq. Go inside the "output" folder generated in the previous step and write these commands:
+
+```bash
+biom convert -i feature-table.biom -o feature-table.tsv --to-tsv
+
+sed -i s/Taxon/taxonomy/ taxonomy.tsv | sed -i s/Feature\ ID/FeatureID/ taxonomy.tsv
+
+biom add-metadata \
+  -i feature-table.tsv \
+  -o feature_w_tax.biom \
+  --observation-metadata-fp taxonomy.tsv \
+  --observation-header FeatureID,taxonomy,Confidence \
+  --sc-separated taxonomy --float-fields Confidence
+
+```
+**Constructing a classifier for a new reference database**:
+Follow the tutorial given at [https://docs.qiime2.org/2019.7/tutorials/feature-classifier/] [ https://docs.qiime2.org/2019.7/tutorials/feature-classifier/]
+```bash
+qiime tools import --type 'FeatureData[Sequence]' --input-path fungene_nirK_28_08_2019.fasta --output-path fungene_nirK_28_08_2019.qza
+
+qiime tools import --type 'FeatureData[Taxonomy]' --input-format HeaderlessTSVTaxonomyFormat --input-path fungene_nirK_28_08_2019.tax --output-path fungene_nirK_28_08_2019-taxonomy.qza 
+
+qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads fungene_nirK_28_08_2019.qza --i-reference-taxonomy fungene_nirK_28_08_2019-taxonomy.qza --o-classifier fungene_nirK_28_08_2019-classifier.qza
+
+```
+
+[https://docs.qiime2.org/2019.7/tutorials/feature-classifier/]:  https://docs.qiime2.org/2019.7/tutorials/feature-classifier/
+[https://github.com/joey711/phyloseq/issues/821]: https://github.com/joey711/phyloseq/issues/821 
 [http://userweb.eng.gla.ac.uk/umer.ijaz]: http://userweb.eng.gla.ac.uk/umer.ijaz "Dr Umer Zeeshan Ijaz"
